@@ -206,3 +206,58 @@
     });
   }
 })();
+
+/* ------------------------------------------------------------
+   6. Modales de formulario y calendario (GoHighLevel)
+   - data-form-open      → abre el formulario de contacto
+   - data-calendar-open  → abre el calendario de citas
+   Se cierran con la X, clic afuera o Escape.
+   El href de cada botón se queda como respaldo: si el JS falla,
+   el enlace funciona igual que antes.
+   El calendario se carga hasta que alguien lo abre (data-src),
+   para no hacer más lenta la página.
+   ------------------------------------------------------------ */
+(function embedModals() {
+  function setup(modalId, triggerAttr) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+
+    const closeBtn = modal.querySelector('.form-modal__close');
+    let lastTrigger = null;
+
+    function open(e) {
+      e.preventDefault();
+      lastTrigger = e.currentTarget;
+
+      // Carga diferida: el iframe recibe su src la primera vez que se abre
+      modal.querySelectorAll('iframe[data-src]').forEach((frame) => {
+        if (!frame.getAttribute('src')) frame.setAttribute('src', frame.dataset.src);
+      });
+
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function close() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (lastTrigger) lastTrigger.focus();
+    }
+
+    document.querySelectorAll(`[${triggerAttr}]`).forEach((el) => el.addEventListener('click', open));
+
+    modal.addEventListener('click', (e) => {
+      if (e.target.closest('[data-form-close]')) close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) close();
+    });
+  }
+
+  setup('psd-form-modal', 'data-form-open');
+  setup('psd-calendar-modal', 'data-calendar-open');
+})();
