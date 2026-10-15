@@ -261,3 +261,20 @@
   setup('psd-form-modal', 'data-form-open');
   setup('psd-calendar-modal', 'data-calendar-open');
 })();
+
+document.querySelectorAll('.bars--compare').forEach((el) => {
+  if (!('IntersectionObserver' in window)) {
+    el.classList.add('is-in');
+    return;
+  }
+  const io = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        el.classList.add('is-in');
+        io.disconnect();
+      }
+    },
+    { threshold: 0.4 }
+  );
+  io.observe(el);
+});

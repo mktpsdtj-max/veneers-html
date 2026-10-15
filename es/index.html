@@ -136,24 +136,35 @@
                 <span class="stat__lead">Ahorra hasta</span> <span class="stat__figure">70%</span>
                 <span class="stat__note">frente al precio promedio de las carillas en EE. UU.</span>
               </div>
-              <div
-                class="bars"
-                role="img"
-                aria-label="Carillas en EE. UU. (promedio): 100%. Carillas en Perfect Smile Dental: 30%."
-              >
-                <div class="bar">
-                  <span class="bar__label">Carillas en EE. UU. (promedio)</span>
-                  <span class="bar__track"
-                    ><span class="bar__fill bar__fill--from" style="--w: 100%"></span
-                  ></span>
-                </div>
-                <div class="bar">
-                  <span class="bar__label bar__label--to">Carillas en Perfect Smile Dental</span>
-                  <span class="bar__track"
-                    ><span class="bar__fill bar__fill--to" style="--w: 30%"></span
-                  ></span>
-                </div>
-              </div>
+          <div
+  class="bars bars--compare"
+  role="img"
+  aria-label="Carillas en EE. UU. (promedio): 100%. Carillas en Perfect Smile Dental: 30%. Ahorras hasta 70%."
+>
+  <div class="bar">
+    <div class="bar__head">
+      <span class="bar__label">Carillas en EE. UU. (promedio)</span>
+      <span class="bar__value bar__value--from">100%</span>
+    </div>
+    <span class="bar__track">
+      <span class="bar__fill bar__fill--from" style="--w: 100%"></span>
+    </span>
+  </div>
+
+  <div class="bar">
+    <div class="bar__head">
+      <span class="bar__label bar__label--to">Carillas en Perfect Smile Dental</span>
+      <span class="bar__value bar__value--to">30%</span>
+    </div>
+    <span class="bar__track">
+      <span class="bar__fill bar__fill--to" style="--w: 30%"></span>
+      <span class="bar__save" style="--w: 70%">
+        <span class="material-symbols-outlined" aria-hidden="true">savings</span>
+        Ahorras 70%
+      </span>
+    </span>
+  </div>
+</div>
               <div class="card__body">
                 <h3 class="card__title">Calidad premium, costo justo</h3>
                 <p class="card__text">
