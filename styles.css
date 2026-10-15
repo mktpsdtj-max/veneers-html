@@ -75,10 +75,8 @@ body {
 img { max-width: 100%; display: block; }
 a { color: inherit; }
 
-/* Fraunces para titulares: autoridad editorial, no "startup tech".
-   Optical sizing alto y wonk/soft en 0 lo mantiene serio, no decorativo. */
 .display {
-    font-family: 'Fraunces', Georgia, serif;
+    font-family: "Open Sans", sans-serif;
     font-variation-settings: 'SOFT' 0, 'WONK' 0, 'opsz' 120;
     font-weight: 600;
     letter-spacing: -0.025em;
@@ -222,10 +220,10 @@ html { scroll-behavior: smooth; }
 .section-eyebrow--light { color: var(--psd-blue-200); }
 
 .section-heading {
-    font-family: 'Fraunces', Georgia, serif;
+ font-family: "Open Sans", sans-serif;
     font-variation-settings: 'SOFT' 0, 'WONK' 0, 'opsz' 90;
     font-size: var(--t-h2);
-    font-weight: 600;
+    font-weight: 700;
     color: var(--psd-primary);
     letter-spacing: -0.022em;
     line-height: 1.12;
@@ -234,7 +232,7 @@ html { scroll-behavior: smooth; }
 }
 .section-heading--light { color: #fff; }
 
-.section-intro { max-width: 34ch; margin-bottom: clamp(2.5rem, 4vw, 3.5rem); }
+.section-intro { max-width: 46ch!important; margin-bottom: clamp(2.5rem, 4vw, 3.5rem); }
 .section-intro--wide { max-width: 52ch; }
 
 .section-text {
@@ -598,9 +596,9 @@ html { scroll-behavior: smooth; }
   margin-bottom: 4px;
 }
 .stat__figure {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: "Open Sans", sans-serif;
   font-variation-settings: 'SOFT' 0, 'WONK' 0, 'opsz' 144;
-  font-size: clamp(4rem, 2.6rem + 5vw, 6.5rem);
+  font-size: clamp(4rem, 2.6rem + 5vw, 5.5rem);
   font-weight: 600;
   line-height: .9;
   letter-spacing: -0.045em;
@@ -787,7 +785,7 @@ html { scroll-behavior: smooth; }
 
 .cell--featured .cell__icon { color: var(--psd-day); font-size: 32px; }
 .cell--featured .cell__title {
-  font-family: 'Fraunces', Georgia, serif;
+ font-family: "Open Sans", sans-serif;
   font-variation-settings: 'SOFT' 0, 'WONK' 0, 'opsz' 70;
   font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.125rem);
   letter-spacing: -0.022em;
@@ -826,10 +824,10 @@ html { scroll-behavior: smooth; }
   margin-bottom: 22px;
 }
 .step__num {
-  font-family: 'Fraunces', Georgia, serif;
+ font-family: "Open Sans", sans-serif;
   font-variation-settings: 'SOFT' 0, 'WONK' 0, 'opsz' 100;
   font-size: 2.75rem;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1;
   color: var(--psd-accent);
   letter-spacing: -0.03em;
@@ -909,10 +907,10 @@ html { scroll-behavior: smooth; }
   margin: 0;
   display: flex;
   flex-direction: column;
-  font-family: 'Fraunces', Georgia, serif;
+ font-family: "Open Sans", sans-serif;
   font-variation-settings: 'SOFT' 0, 'WONK' 0, 'opsz' 144;
   font-size: clamp(2.4rem, 1.8rem + 2vw, 3.25rem);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.035em;
   line-height: 1;
   color: var(--psd-primary);
