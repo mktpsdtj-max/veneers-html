@@ -278,3 +278,50 @@ document.querySelectorAll('.bars--compare').forEach((el) => {
   );
   io.observe(el);
 });
+
+/* ============================================================ */
+/* 7. CARRUSEL DE ANTES Y DESPUÉS                                */
+/* Las flechas avanzan un caso a la vez; se apagan en los        */
+/* extremos y se ocultan si todos los casos caben en pantalla.   */
+/* ============================================================ */
+(function baCarousel() {
+  document.querySelectorAll('[data-ba-carousel]').forEach(function (root) {
+    var track = root.querySelector('.cases');
+    var prev = root.querySelector('[data-ba-prev]');
+    var next = root.querySelector('[data-ba-next]');
+    if (!track || !prev || !next) return;
+
+    function step() {
+      var card = track.querySelector('.ba');
+      if (!card) return track.clientWidth;
+      var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      return card.getBoundingClientRect().width + gap;
+    }
+
+    function update() {
+      var max = track.scrollWidth - track.clientWidth;
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= max - 2;
+      root.classList.toggle('is-static', max <= 2);
+    }
+
+    prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); });
+
+    // Teclado: flechas izquierda/derecha (menos dentro del slider antes/después)
+    root.addEventListener('keydown', function (e) {
+      if (e.target.classList && e.target.classList.contains('ba__range')) return;
+      if (e.key === 'ArrowLeft') prev.click();
+      if (e.key === 'ArrowRight') next.click();
+    });
+
+    var raf;
+    track.addEventListener('scroll', function () {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    window.addEventListener('load', update);
+    update();
+  });
+})();

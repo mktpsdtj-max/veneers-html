@@ -1759,3 +1759,68 @@ html { scroll-behavior: smooth; }
     transition: none;
   }
 }
+
+/* ============================================================ */
+/* ANTES Y DESPUÉS EN CARRUSEL                                   */
+/* 3 visibles en escritorio, 2 en tablet, 1 (con asomo) en móvil */
+/* ============================================================ */
+
+.ba-carousel { display: grid; gap: 18px; }
+
+/* La pista: scroll horizontal con imán en cada caso */
+.ba-carousel .cases {
+  --per-view: 1.12;
+  --gap: 16px;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: var(--gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding-bottom: 4px; /* que no se corte la sombra */
+}
+.ba-carousel .cases::-webkit-scrollbar { display: none; }
+
+@media (min-width: 640px)  { .ba-carousel .cases { --per-view: 2; } }
+@media (min-width: 1024px) { .ba-carousel .cases { --per-view: 3; --gap: 20px; } }
+
+.ba-carousel .ba {
+  flex: 0 0 calc((100% - (var(--per-view) - 1) * var(--gap)) / var(--per-view));
+  scroll-snap-align: start;
+}
+
+/* Flechas: debajo de las imágenes en móvil, centradas */
+.ba-nav { display: flex; justify-content: center; gap: 10px; }
+
+/* Escritorio y tablet: arriba a la derecha del carrusel */
+@media (min-width: 768px) {
+  .ba-nav { order: -1; justify-content: flex-end; }
+}
+
+.ba-nav__btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--psd-blue-200);
+  background: var(--psd-surface);
+  color: var(--psd-primary);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: background-color .18s ease, color .18s ease, opacity .18s ease, transform .12s ease;
+}
+.ba-nav__btn:hover:not(:disabled) { background: var(--psd-accent); border-color: var(--psd-accent); color: #fff; }
+.ba-nav__btn:active:not(:disabled) { transform: scale(.95); }
+.ba-nav__btn:disabled { opacity: .35; cursor: default; box-shadow: none; }
+.ba-nav__btn svg { display: block; }
+
+/* Si caben todos los casos, las flechas sobran */
+.ba-carousel.is-static .ba-nav { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ba-carousel .cases { scroll-behavior: auto; }
+}
