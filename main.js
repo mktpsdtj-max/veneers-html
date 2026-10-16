@@ -325,3 +325,43 @@ document.querySelectorAll('.bars--compare').forEach((el) => {
     update();
   });
 })();
+
+/* ============================================================ */
+/* 10. SLIDER GENÉRICO (galería u otros)                         */
+/* Cualquier [data-slider] con [data-slider-track] y flechas     */
+/* [data-slider-prev] / [data-slider-next]. Sin dots.            */
+/* ============================================================ */
+(function sliders() {
+  document.querySelectorAll('[data-slider]').forEach(function (root) {
+    var track = root.querySelector('[data-slider-track]');
+    var prev = root.querySelector('[data-slider-prev]');
+    var next = root.querySelector('[data-slider-next]');
+    if (!track || !prev || !next) return;
+
+    function step() {
+      var item = track.firstElementChild;
+      if (!item) return track.clientWidth;
+      var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      return item.getBoundingClientRect().width + gap;
+    }
+
+    function update() {
+      var max = track.scrollWidth - track.clientWidth;
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= max - 2;
+      root.classList.toggle('is-static', max <= 2);
+    }
+
+    prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); });
+
+    var raf;
+    track.addEventListener('scroll', function () {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    window.addEventListener('load', update);
+    update();
+  });
+})();

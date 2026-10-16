@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="/assets/favicon.ico" sizes="any" />
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/assets/favicon.png" type="image/png" sizes="32x32" />
+<meta name="robots" content="noindex, nofollow" />
+       <!-- Fraunces variable: titulares con autoridad editorial -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" 
+    rel="stylesheet" 
+    />
+      <link rel="stylesheet" href="/styles.css" />
+
+      <style>
+
+
+.slider { display: grid; gap: 18px; }
+
+.gallery {
+  --per-view: 1.12;
+  --gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 4px; /* que no se corte la sombra */
+  display: flex;
+  gap: var(--gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.gallery::-webkit-scrollbar { display: none; }
+
+@media (min-width: 640px)  { .gallery { --per-view: 2; } }
+@media (min-width: 1024px) { .gallery { --per-view: 3; --gap: 20px; } }
+
+.gallery__item {
+  flex: 0 0 calc((100% - (var(--per-view) - 1) * var(--gap)) / var(--per-view));
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+/* Si todas las fotos caben, las flechas se ocultan */
+.slider.is-static .ba-nav { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery { scroll-behavior: auto; }
+}
+
+.gallery__btn {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--psd-surface-sunk);
+  box-shadow: var(--shadow-sm);
+  cursor: zoom-in;
+  aspect-ratio: 4 / 3;
+  transition: box-shadow .2s ease;
+}
+.gallery__btn:hover { box-shadow: var(--shadow-lg); }
+
+.gallery__btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform .5s cubic-bezier(.2, .7, .3, 1);
+}
+.gallery__btn:hover img { transform: scale(1.04); }
+
+/* Pie de foto sobre un degradado, siempre legible */
+.gallery__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 36px 18px 14px;
+  background: linear-gradient(to top, rgba(0, 20, 40, .75), transparent);
+  color: #fff;
+  font-size: var(--t-small);
+  font-weight: 600;
+  text-align: left;
+}
+
+/* ---------- Visor ---------- */
+.lightbox {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 56px 16px 24px;
+  border: 0;
+  background: rgba(0, 10, 25, .94);
+  color: #fff;
+}
+.lightbox[open] { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.lightbox::backdrop { background: transparent; }
+
+.lightbox__figure {
+  margin: 0;
+  max-width: min(1100px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+.lightbox__img {
+  max-width: 100%;
+  max-height: calc(100dvh - 140px);
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadow-lg);
+  object-fit: contain;
+}
+.lightbox__caption {
+  margin-top: 12px;
+  font-size: var(--t-small);
+  color: rgba(255, 255, 255, .8);
+  text-align: center;
+}
+
+.lightbox__close,
+.lightbox__nav {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, .25);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .1);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color .18s ease;
+}
+.lightbox__close:hover,
+.lightbox__nav:hover { background: rgba(255, 255, 255, .25); }
+
+.lightbox__close { position: absolute; top: 12px; right: 12px; width: 42px; height: 42px; }
+.lightbox__nav { width: 48px; height: 48px; }
+
+/* Móvil: las flechas van abajo, al centro, para no tapar la foto */
+@media (max-width: 639px) {
+  .lightbox[open] { flex-direction: column; }
+  .lightbox__nav { position: absolute; bottom: 20px; }
+  .lightbox__nav--prev { left: calc(50% - 58px); }
+  .lightbox__nav--next { right: calc(50% - 58px); }
+  .lightbox__img { max-height: calc(100dvh - 190px); }
+}
+
+body.has-lightbox { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery__btn img { transition: none; }
+}
+      </style>
+</head>
+<body>
+  
+       <header class="navbar">
+      <div class="container navbar__inner">
+        <a href="/" class="navbar__brand">
+          <img src="/assets/logo.avif" alt="Perfect Smile Dental" />
+        </a>
+
+      </div>
+    </header>
+
+      <section id="sistema" class="section" >
+        <div class="container grid">
+          <div class="copy psd-reveal">
+            <span class="section-eyebrow">Patient education</span>
+            <h2 class="section-heading">What Are Ceramic Veneers?</h2>
+            <p class="section-text copy__body">
+              A veneer is a layer of material placed over a tooth: an ultra-thin shell, custom-made for your
+              mouth, bonded to the front of your natural teeth. Ceramic veneers improve the appearance of your
+              smile and protect the tooth surface from damage, reflecting light just like natural enamel.
+            </p>
+            <div class="parts">
+              <div class="parts__tabs" role="tablist" id="psd-tabs">
+                <button
+                  type="button"
+                  role="tab"
+                  id="tab-0"
+                  aria-controls="panel-0"
+                  aria-selected="true"
+                  data-idx="0"
+                  class="parts__tab is-active"
+                >
+                  Stains</button
+                ><button
+                  type="button"
+                  role="tab"
+                  id="tab-1"
+                  aria-controls="panel-1"
+                  aria-selected="false"
+                  data-idx="1"
+                  class="parts__tab"
+                >
+                  Chips and cracks</button
+                ><button
+                  type="button"
+                  role="tab"
+                  id="tab-2"
+                  aria-controls="panel-2"
+                  aria-selected="false"
+                  data-idx="2"
+                  class="parts__tab"
+                >
+                  Shape and gaps
+                </button>
+              </div>
+              <div class="parts__panels">
+                <div
+                  role="tabpanel"
+                  id="panel-0"
+                  aria-labelledby="tab-0"
+                  data-idx="0"
+                  class="parts__panel is-active"
+                >
+                  <h3 class="parts__title">Veneers for stained teeth</h3>
+                  <p class="parts__text">
+                    They cover severe discoloration and help prevent the tooth from staining further over
+                    time.
+                  </p>
+                </div>
+                <div role="tabpanel" id="panel-1" aria-labelledby="tab-1" data-idx="1" class="parts__panel">
+                  <h3 class="parts__title">Veneers for damaged teeth</h3>
+                  <p class="parts__text">
+                    They cover chips and cracks, and protect the tooth surface from future damage.
+                  </p>
+                </div>
+                <div role="tabpanel" id="panel-2" aria-labelledby="tab-2" data-idx="2" class="parts__panel">
+                  <h3 class="parts__title">Veneers for an even smile</h3>
+                  <p class="parts__text">
+                    They correct worn teeth, gaps and mild visual misalignment, without years of braces.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="media">
+            <!-- Video en loop: arranca solo, sin sonido. Clic = modal con sonido.
+                 "#t=0.1" muestra el primer fotograma como vista previa mientras carga. -->
+            <div class="video-frame-outer">
+              <div
+                class="video-frame-inner is-loop"
+                style="aspect-ratio: 1 / 1"
+                data-video-src="/assets/veneers.mp4"
+                data-video-type="mp4"
+                role="button"
+                tabindex="0"
+                aria-label="Natural tooth vs. with a veneer"
+              >
+                <video
+                  class="video-frame__loop"
+                  src="/assets/veneers.mp4#t=0.1"
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  aria-hidden="true"
+                ></video>
+                <div class="video-overlay"></div>
+                <span class="video-pulse-ring"></span>
+                <span class="video-play-btn" aria-hidden="true">
+                  <span class="material-symbols-outlined fill-icon" style="font-size: 26px">volume_up</span>
+                </span>
+                <div class="video-caption-chip">
+                  <span class="video-eyebrow">Explainer video</span>
+                  <span class="video-title">Natural tooth vs. with a veneer</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+        <section id="proceso" class="section" style="margin-top:-120px">
+  <div class="container">
+    <div class="section-intro psd-reveal">
+      <span class="section-eyebrow">The process</span>
+      <h2 class="section-heading">Your Veneers in 2 to 3 Visits</h2>
+    </div>
+    <ol class="steps steps--visits steps--two">
+      <li class="step">
+        <div class="step__head"><span class="step__num">1</span> <span class="step__rule"></span></div>
+        <span class="step__icon material-symbols-outlined">draw</span>
+        <span class="step__label">Appointment 1</span>
+        <h3 class="step__title">Design and Preparation</h3>
+        <ol class="days">
+          <li class="day">
+            <h4 class="day__title">Smile Design</h4>
+            <p class="day__text">
+              On your first visit (or a prior video consultation), we listen to your goals, assess your facial
+              structure and choose the ideal shade for your veneers.
+            </p>
+          </li>
+          <li class="day">
+            <h4 class="day__title">Preparation and Scan</h4>
+            <p class="day__text">
+              We condition the enamel and take a precise digital scan for our lab. You leave with highly
+              aesthetic temporary veneers.
+            </p>
+          </li>
+        </ol>
+      </li>
+      <li class="step">
+        <div class="step__head"><span class="step__num">2</span> <span class="step__rule"></span></div>
+        <span class="step__icon material-symbols-outlined">task_alt</span>
+        <span class="step__label">Appointment 2</span>
+        <h3 class="step__title">Placing Your Veneers</h3>
+        <p class="step__text">
+          On your next visit, we fine-tune the size and color before permanently bonding your ceramic veneers.
+        </p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+   <section id="precios" class="section section--white">
+        <div class="container">
+
+          <div class="shared">
+            <p class="shared__title">Included in all three packages</p>
+            <ul class="shared__list">
+              <li>Premier patient care</li>
+              <li>Comprehensive evaluation</li>
+              <li>Digital intraoral scan</li>
+              <li>Computer-assisted smile design</li>
+              <li>2–3 visits</li>
+            </ul>
+          </div>
+          <ul class="notes">
+            <li class="note">
+              <span class="material-symbols-outlined">info</span>
+              <span>Items in packages are not interchangeable.</span>
+            </li>
+            <li class="note">
+              <span class="material-symbols-outlined">hotel</span>
+              <span>We suggest booking accommodations for one day.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+         <section id="galeria" class="section section">
+  <div class="container">
+    <div class="section-intro section-intro--wide psd-reveal">
+      <span class="section-eyebrow">Inside our clinic</span>
+      <h2 class="section-heading">A Modern Clinic Steps from the Border</h2>
+      <p class="section-text">
+        Take a look at the space, the technology and the team that will care for you during your visit.
+      </p>
+    </div>
+
+    <div class="slider" data-slider>
+      <ul class="gallery" data-slider-track>
+        <li class="gallery__item">
+          <button type="button" class="gallery__btn" data-gallery-open>
+            <img src="/assets/img/clinica1.webp" alt="Perfect Smile Dental reception area" loading="lazy" decoding="async" />
+            <span class="gallery__caption">Perfect Smile Dental</span>
+          </button>
+        </li>
+        <li class="gallery__item">
+          <button type="button" class="gallery__btn" data-gallery-open>
+            <img src="/assets/img/clinica2.webp" alt="Treatment room with modern dental chair" loading="lazy" decoding="async" />
+            <span class="gallery__caption">Perfect Smile Dental</span>
+          </button>
+        </li>
+        <li class="gallery__item">
+          <button type="button" class="gallery__btn" data-gallery-open>
+            <img src="/assets/img/clinica3.webp" alt="3D CT scanner used for implant planning" loading="lazy" decoding="async" />
+            <span class="gallery__caption">Perfect Smile Dental</span>
+          </button>
+        </li>
+        <li class="gallery__item">
+          <button type="button" class="gallery__btn" data-gallery-open>
+            <img src="/assets/img/clinica4.webp" alt="Our bilingual dental team" loading="lazy" decoding="async" />
+            <span class="gallery__caption">Perfect Smile Dental</span>
+          </button>
+        </li>
+        <li class="gallery__item">
+          <button type="button" class="gallery__btn" data-gallery-open>
+            <img src="/assets/img/clinica5.webp" alt="In-house dental laboratory" loading="lazy" decoding="async" />
+            <span class="gallery__caption">Perfect Smile Dental</span>
+          </button>
+        </li>
+      
+  
+      </ul>
+
+      <div class="ba-nav" role="group" aria-label="Browse photos">
+        <button type="button" class="ba-nav__btn" data-slider-prev aria-label="Previous photo">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button type="button" class="ba-nav__btn" data-slider-next aria-label="Next photo">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+<!-- Visor de la galería: va UNA vez, antes de los <script> del final del body -->
+<dialog class="lightbox" id="psd-lightbox" aria-label="Photo viewer">
+  <button type="button" class="lightbox__close" data-lightbox-close aria-label="Close">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lightbox-prev aria-label="Previous photo">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <figure class="lightbox__figure">
+    <img class="lightbox__img" src="" alt="" />
+    <figcaption class="lightbox__caption"></figcaption>
+  </figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lightbox-next aria-label="Next photo">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+  </button>
+</dialog>
+</section>
+
+   <section id="historias" class="section section--white" style="margin-top:-120px">
+        <div class="container">
+          <div class="section-intro section-intro--wide psd-reveal">
+            <span class="section-eyebrow">Before and after</span>
+            <h2 class="section-heading">Real Veneers. Transformed Smiles.</h2>
+            <p class="section-text">
+              Patients who transformed their smile with ceramic veneers at Perfect Smile Dental. Drag each
+              photo to compare.
+            </p>
+          </div>
+    <div class="ba-carousel" data-ba-carousel>
+  <div class="cases">
+    <figure class="ba" style="--pos: 50%">
+      <div class="ba__stage" data-empty="Photo coming soon">
+        <img class="ba__img" src="/assets/img/before1.webp" alt="Patient before their ceramic veneers" loading="lazy" decoding="async" />
+        <img class="ba__img ba__img--after" src="/assets/img/after1.webp" alt="The same patient with their ceramic veneers" loading="lazy" decoding="async" />
+        <span class="ba__line" aria-hidden="true"></span>
+        <span class="ba__knob" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M9.5 7 5 12l4.5 5V7Zm5 0v10l4.5-5-4.5-5Z"></path></svg>
+        </span>
+        <span class="ba__tag ba__tag--before">Before</span>
+        <span class="ba__tag ba__tag--after">After</span>
+        <input class="ba__range" type="range" min="0" max="100" value="50" step="0.1" aria-label="Before and after comparison — Case 1" />
+      </div>
+    </figure>
+
+    <figure class="ba" style="--pos: 50%">
+      <div class="ba__stage" data-empty="Photo coming soon">
+        <img class="ba__img" src="/assets/img/before2.webp" alt="Patient before their ceramic veneers" loading="lazy" decoding="async" />
+        <img class="ba__img ba__img--after" src="/assets/img/after2.webp" alt="The same patient with their ceramic veneers" loading="lazy" decoding="async" />
+        <span class="ba__line" aria-hidden="true"></span>
+        <span class="ba__knob" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M9.5 7 5 12l4.5 5V7Zm5 0v10l4.5-5-4.5-5Z"></path></svg>
+        </span>
+        <span class="ba__tag ba__tag--before">Before</span>
+        <span class="ba__tag ba__tag--after">After</span>
+        <input class="ba__range" type="range" min="0" max="100" value="50" step="0.1" aria-label="Before and after comparison — Case 2" />
+      </div>
+    </figure>
+
+    <figure class="ba" style="--pos: 50%">
+      <div class="ba__stage" data-empty="Photo coming soon">
+        <img class="ba__img" src="/assets/img/before3.webp" alt="Patient before their ceramic veneers" loading="lazy" decoding="async" />
+        <img class="ba__img ba__img--after" src="/assets/img/after3.webp" alt="The same patient with their ceramic veneers" loading="lazy" decoding="async" />
+        <span class="ba__line" aria-hidden="true"></span>
+        <span class="ba__knob" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M9.5 7 5 12l4.5 5V7Zm5 0v10l4.5-5-4.5-5Z"></path></svg>
+        </span>
+        <span class="ba__tag ba__tag--before">Before</span>
+        <span class="ba__tag ba__tag--after">After</span>
+        <input class="ba__range" type="range" min="0" max="100" value="50" step="0.1" aria-label="Before and after comparison — Case 3" />
+      </div>
+    </figure>
+
+    <figure class="ba" style="--pos: 50%">
+      <div class="ba__stage" data-empty="Photo coming soon">
+        <img class="ba__img" src="/assets/img/before4.webp" alt="Patient before their ceramic veneers" loading="lazy" decoding="async" />
+        <img class="ba__img ba__img--after" src="/assets/img/after4.webp" alt="The same patient with their ceramic veneers" loading="lazy" decoding="async" />
+        <span class="ba__line" aria-hidden="true"></span>
+        <span class="ba__knob" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M9.5 7 5 12l4.5 5V7Zm5 0v10l4.5-5-4.5-5Z"></path></svg>
+        </span>
+        <span class="ba__tag ba__tag--before">Before</span>
+        <span class="ba__tag ba__tag--after">After</span>
+        <input class="ba__range" type="range" min="0" max="100" value="50" step="0.1" aria-label="Before and after comparison — Case 4" />
+      </div>
+    </figure>
+  </div>
+
+  <div class="ba-nav" role="group" aria-label="Browse cases">
+    <button type="button" class="ba-nav__btn" data-ba-prev aria-label="Previous case">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button type="button" class="ba-nav__btn" data-ba-next aria-label="Next case">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+  </div>
+</div>
+
+<p class="cases__hint">Drag each photo to compare, and use the arrows to see more veneer cases. Real patients, published with their consent.</p>
+        </div>
+      </section>
+
+           <script src="/main.js" defer></script>
+
+            <script>
+                /* ============================================================ */
+/* 9. GALERÍA CON VISOR                                          */
+/* Clic en una foto = se abre grande. Flechas, Esc y clic fuera. */
+/* ============================================================ */
+(function gallery() {
+  var dlg = document.getElementById('psd-lightbox');
+  var items = Array.prototype.slice.call(document.querySelectorAll('[data-gallery-open]'));
+  if (!dlg || !items.length || typeof dlg.showModal !== 'function') return;
+
+  var img = dlg.querySelector('.lightbox__img');
+  var cap = dlg.querySelector('.lightbox__caption');
+  var current = 0;
+
+  function show(i) {
+    current = (i + items.length) % items.length;
+    var src = items[current].querySelector('img');
+    var text = items[current].querySelector('.gallery__caption');
+    img.src = src.currentSrc || src.src;
+    img.alt = src.alt;
+    cap.textContent = text ? text.textContent : '';
+  }
+
+  items.forEach(function (btn, i) {
+    btn.addEventListener('click', function () {
+      show(i);
+      dlg.showModal();
+      document.body.classList.add('has-lightbox');
+    });
+  });
+
+  dlg.querySelector('[data-lightbox-prev]').addEventListener('click', function () { show(current - 1); });
+  dlg.querySelector('[data-lightbox-next]').addEventListener('click', function () { show(current + 1); });
+  dlg.querySelector('[data-lightbox-close]').addEventListener('click', function () { dlg.close(); });
+
+  // Clic en el fondo oscuro (fuera de la foto y los botones) = cerrar
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+
+  dlg.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft') show(current - 1);
+    if (e.key === 'ArrowRight') show(current + 1);
+  });
+
+  dlg.addEventListener('close', function () {
+    document.body.classList.remove('has-lightbox');
+    items[current].focus();
+  });
+})();
+            </script>
+
+</body>
+</html>
